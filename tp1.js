@@ -1,3 +1,5 @@
+var prompt = require('prompt-async');
+
 function lecture_fichier(filename){
     var fs = require('fs');
     let fichier = fs.readFileSync(filename, {
@@ -23,13 +25,13 @@ function liste_tache() {
 
 }
 
-function ajouter_tache(tache) {
+async function ajouter_tache(tache) {
     var fs = require('fs')
     let fichier = lecture_fichier('data.json');
     if (fichier == "") {
         let donnees = '{"tâche 1": ' + '"' + tache + '"}';
 
-        fs.appendFile('data.json', donnees, err => {
+        fs.appendFileSync('data.json', donnees, err => {
             if (err) {
                 console.error(err)
                 return
@@ -48,23 +50,21 @@ function ajouter_tache(tache) {
 
         fichJson["tâche " + cpt] = tache;
         let nv_fichJSON = JSON.stringify(fichJson);
-        fs.writeFile('data.json', nv_fichJSON, err => {
+        fs.writeFileSync('data.json', nv_fichJSON, err => {
             if (err) {
               console.error(err)
               return
             }
         })
-        console.log(lecture_fichier("data.json"))
     }
 }
 
 function supprimer_tache() {
     let fichier = lecture_fichier('data.json');
-    var choice = require('prompt');
-    choice.start();
+    prompt.start();
 
     console.log("Veuillez rentrer le numéro de tâche souhaitée :");
-    choice.get(['choix'], function (err, result) {
+    prompt.get(['choix'], function (err, result) {
         if (err) throw err
 
         let fichJson = JSON.parse(data);
@@ -100,27 +100,22 @@ function supprimer_tache() {
 }
 
 
-function menu_accueil() {
+async function menu_accueil() {
 
     console.log("Bienvenue sur ma TODO liste !");
     console.log("1 : lire liste de tâche, 2 : rentrez une tâche, 3 : supprimer tâche");
-    var choice = require('prompt');
-    choice.start();
+    prompt.start();
 
-    choice.get(['choix'], function (err, result) {
-        if (err) throw err;
+    result = await prompt.get(['choix']);
         if (result.choix == 1) { // afficher tache
 
             liste_tache();
         } else if (result.choix == 2) { // ajout tache
-            var choice = require('prompt');
-            choice.start();
+            prompt.start();
             console.log('Veuillez rentrer la tâche à exécuter : ' + ' ');
-            choice.get(['tache'], function (err, result) {
-                if (err) throw err;
-                ajouter_tache(result.tache);
+            result = await prompt.get(['tache']);
+                await ajouter_tache(result.tache);
                 liste_tache();
-            });
 
         } else if (result.choix == 3) { // suppresion tache
             liste_tache();
@@ -129,7 +124,6 @@ function menu_accueil() {
             menu_accueil();
             // rediriger ici
         }
-    });
 
 }
 
