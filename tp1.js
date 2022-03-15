@@ -15,20 +15,13 @@ function liste_tache() {
 
 }
 
-async function ajouter_tache() {
+function ajouter_tache(tache) {
     var fs = require('fs');
     let fichier = fs.readFileSync('data.json', {
         encoding: 'utf8',
         flag: 'r+'
     });
-    var choice = require('prompt');
-    choice.start();
-    console.log('Veuillez rentrer la tâche à exécuter : ' + ' ')
-
     if (fichier == "") {
-
-        choice.get(['choix'], function (err, result) {
-            if (err) throw err;
             var deb = "{";
             var fin = "}";
             fs.appendFile('data.json', deb, err => {
@@ -38,8 +31,7 @@ async function ajouter_tache() {
                 }
                 //file written successfully
             });
-            let donnees = '"tâche 1": ' + '"' + result.choix + '"';
-            console.log(donnees);
+            let donnees = '"tâche 1": ' + '"' + tache + '"';
 
             fs.appendFile('data.json', donnees, err => {
                 if (err) {
@@ -52,17 +44,10 @@ async function ajouter_tache() {
                         console.error(err)
                         return
                     }
-                    //file written successfully
-                    liste_tache();
                 });
             });
 
-        });
-
     } else {
-        choice.get(['choix'], function (err, result) {
-            if (err) throw err
-
             let fichJson = JSON.parse(fichier);
 
             cpt = 1;
@@ -71,15 +56,13 @@ async function ajouter_tache() {
                     cpt += 1;
                 }
             }
-            fichJson["tâche " + cpt] = result.choix;
+            fichJson["tâche " + cpt] = tache;
 
             let nv_fichJSON = JSON.stringify(fichJson);
 
             fs.writeFile('data.json', nv_fichJSON, {
                 flag: 'w'
             }, err => {});
-
-        });
     }
 }
 
@@ -129,7 +112,7 @@ function supprimer_tache() {
 }
 
 
-async function menu_accueil() {
+function menu_accueil() {
 
     const fs = require('fs');
 
@@ -147,7 +130,15 @@ async function menu_accueil() {
         if (result.choix == 1) {
             liste_tache();
         } else if (result.choix == 2) {
-            ajouter_tache();
+            var choice = require('prompt');
+            choice.start();
+            console.log('Veuillez rentrer la tâche à exécuter : ' + ' ');
+            choice.get(['tache'],function (err, result2) {
+                if (err) throw err;
+                liste_tache();
+                ajouter_tache(result2.tache);
+            } );
+
         } else if (result.choix == 3) {
             liste_tache();
             supprimer_tache();
