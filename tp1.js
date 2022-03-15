@@ -1,12 +1,12 @@
 var prompt = require('prompt-async');
+var fs = require('fs');
 
-function lecture_fichier(filename){
-    var fs = require('fs');
+function lecture_fichier(filename) {
     let fichier = fs.readFileSync(filename, {
         encoding: 'utf8',
         flag: 'r+'
     });
-    return fichier; 
+    return fichier;
 }
 
 function liste_tache() {
@@ -26,7 +26,6 @@ function liste_tache() {
 }
 
 async function ajouter_tache(tache) {
-    var fs = require('fs')
     let fichier = lecture_fichier('data.json');
     if (fichier == "") {
         let donnees = '{"tâche 1": ' + '"' + tache + '"}';
@@ -35,7 +34,7 @@ async function ajouter_tache(tache) {
             if (err) {
                 console.error(err)
                 return
-            }   
+            }
         });
 
     } else {
@@ -52,78 +51,93 @@ async function ajouter_tache(tache) {
         let nv_fichJSON = JSON.stringify(fichJson);
         fs.writeFileSync('data.json', nv_fichJSON, err => {
             if (err) {
-              console.error(err)
-              return
+                console.error(err)
+                return
             }
         })
     }
 }
 
-function supprimer_tache() {
+
+async function supprimer_tache(tache) {
+    console.log(tache);
     let fichier = lecture_fichier('data.json');
-    prompt.start();
 
-    console.log("Veuillez rentrer le numéro de tâche souhaitée :");
-    prompt.get(['choix'], function (err, result) {
-        if (err) throw err
+    let fichJson = JSON.parse(fichier);
 
-        let fichJson = JSON.parse(data);
+    if (fichJson["tâche " + tache] == undefined) {
+        return;
+    }
 
-        if (fichJson["tâche " + result.choix] == undefined) {
-            return;
-        }
+    delete fichJson["tâche " + tache];
 
-        delete fichJson["tâche " + result.choix];
-
-        cpt = parseInt(result.choix);
-        cpt_sup = parseInt(cpt) + 1;
-        elt_sup = `tâche ${cpt_sup}`;
+    cpt = parseInt(tache);
+    cpt_sup = parseInt(cpt) + 1;
+    elt_sup = `tâche ${cpt_sup}`;
+    elt = `tâche ${cpt}`;
+    while (fichJson[elt_sup] != undefined) {
+        var temp = fichJson[elt_sup];
+        fichJson[elt] = temp;
+        delete fichJson[elt_sup];
+        cpt++;
+        cpt_sup++;
         elt = `tâche ${cpt}`;
-        while (fichJson[elt_sup] != undefined) {
-            var temp = fichJson[elt_sup];
-            fichJson[elt] = temp;
-            delete fichJson[elt_sup];
-            cpt++;
-            cpt_sup++;
-            elt = `tâche ${cpt}`;
-            elt_sup = `tâche ${cpt_sup}`;
+        elt_sup = `tâche ${cpt_sup}`;
+    }
+
+    let nv_fichJSON = JSON.stringify(fichJson);
+    console.log(nv_fichJSON)    
+    fs.writeFileSync('data.json', nv_fichJSON, err => {
+        if (err) {
+            console.error(err)
+            return
         }
-
-        let nv_fichJSON = JSON.stringify(fichJson);
-        console.log(nv_fichJSON);
-        fs.writeFile('data.json', nv_fichJSON, {
-            flag: 'w'
-        }, err => {});
-
-    });
-
+    })
 }
 
+function afficher_bienvenue() {
+    console.log("Bienvenue sur ma TODO liste !");
+    console.log("1 : lire liste de tâche, 2 : rentrez une tâche, 3 : supprimer tâche");
+}
+
+function afficher_tache_rentrer() {
+    console.log('Veuillez rentrer la tâche à exécuter : ' + ' ');
+}
+
+function afficher_tache_supprimer() {
+    console.log("Veuillez rentrer le numéro de tâche souhaitée :");
+}
 
 async function menu_accueil() {
 
-    console.log("Bienvenue sur ma TODO liste !");
-    console.log("1 : lire liste de tâche, 2 : rentrez une tâche, 3 : supprimer tâche");
+    afficher_bienvenue();
     prompt.start();
 
     result = await prompt.get(['choix']);
-        if (result.choix == 1) { // afficher tache
-
+    switch (result.choix) {
+        case '1':
             liste_tache();
-        } else if (result.choix == 2) { // ajout tache
+            break;
+        case '2':
             prompt.start();
-            console.log('Veuillez rentrer la tâche à exécuter : ' + ' ');
+            afficher_tache_rentrer();
             result = await prompt.get(['tache']);
-                await ajouter_tache(result.tache);
-                liste_tache();
-
-        } else if (result.choix == 3) { // suppresion tache
+            await ajouter_tache(result.tache);
             liste_tache();
-            supprimer_tache();
-        } else {
+            break;
+        case '3':
+            liste_tache();
+            prompt.start();
+            afficher_tache_supprimer();
+            result = await prompt.get(['tache']);
+            await supprimer_tache(result.tache);
+            liste_tache();
+            break;
+        default:
             menu_accueil();
-            // rediriger ici
-        }
+            break;
+
+    }
 
 }
 
