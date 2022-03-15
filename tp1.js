@@ -27,29 +27,13 @@ function ajouter_tache(tache) {
     var fs = require('fs')
     let fichier = lecture_fichier('data.json');
     if (fichier == "") {
-        var deb = "{";
-        var fin = "}";
-        fs.appendFile('data.json', deb, err => {
-            if (err) {
-                console.error(err)
-                return
-            }
-            //file written successfully
-        });
-        let donnees = '"tâche 1": ' + '"' + tache + '"';
+        let donnees = '{"tâche 1": ' + '"' + tache + '"}';
 
         fs.appendFile('data.json', donnees, err => {
             if (err) {
                 console.error(err)
                 return
-            }
-            // file written successfully
-            fs.appendFile('data.json', fin, err => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-            });
+            }   
         });
 
     } else {
@@ -70,7 +54,7 @@ function ajouter_tache(tache) {
               return
             }
         })
-        console.log(lecture_fichier('data.json'))
+        console.log(lecture_fichier("data.json"))
     }
 }
 
