@@ -1,7 +1,15 @@
-function liste_tache() {
+function lecture_fichier(filename){
     var fs = require('fs');
-    let fichier = fs.readFileSync('data.json');
+    let fichier = fs.readFileSync(filename, {
+        encoding: 'utf8',
+        flag: 'r+'
+    });
+    return fichier; 
+}
 
+function liste_tache() {
+
+    let fichier = lecture_fichier('data.json');
     if (fichier == "") {
         console.log("Aucune tâche est enregistré");
         return;
@@ -16,62 +24,58 @@ function liste_tache() {
 }
 
 function ajouter_tache(tache) {
-    var fs = require('fs');
-    let fichier = fs.readFileSync('data.json', {
-        encoding: 'utf8',
-        flag: 'r+'
-    });
+    var fs = require('fs')
+    let fichier = lecture_fichier('data.json');
     if (fichier == "") {
-            var deb = "{";
-            var fin = "}";
-            fs.appendFile('data.json', deb, err => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-                //file written successfully
-            });
-            let donnees = '"tâche 1": ' + '"' + tache + '"';
+        var deb = "{";
+        var fin = "}";
+        fs.appendFile('data.json', deb, err => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            //file written successfully
+        });
+        let donnees = '"tâche 1": ' + '"' + tache + '"';
 
-            fs.appendFile('data.json', donnees, err => {
+        fs.appendFile('data.json', donnees, err => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            // file written successfully
+            fs.appendFile('data.json', fin, err => {
                 if (err) {
                     console.error(err)
                     return
                 }
-                // file written successfully
-                fs.appendFile('data.json', fin, err => {
-                    if (err) {
-                        console.error(err)
-                        return
-                    }
-                });
             });
+        });
 
     } else {
-            let fichJson = JSON.parse(fichier);
+        let fichJson = JSON.parse(fichier);
 
-            cpt = 1;
-            for (var key in fichJson) {
-                if (fichJson.hasOwnProperty(key)) {
-                    cpt += 1;
-                }
+        cpt = 1;
+        for (var key in fichJson) {
+            if (fichJson.hasOwnProperty(key)) {
+                cpt += 1;
             }
-            fichJson["tâche " + cpt] = tache;
+        }
 
-            let nv_fichJSON = JSON.stringify(fichJson);
-
-            fs.writeFile('data.json', nv_fichJSON, {
-                flag: 'w'
-            }, err => {});
+        fichJson["tâche " + cpt] = tache;
+        let nv_fichJSON = JSON.stringify(fichJson);
+        fs.writeFile('data.json', nv_fichJSON, err => {
+            if (err) {
+              console.error(err)
+              return
+            }
+        })
+        console.log(lecture_fichier('data.json'))
     }
 }
 
 function supprimer_tache() {
-    var fs = require('fs');
-    const data = fs.readFileSync('data.json', {
-        encoding: 'utf8',
-        flag: 'r'
-    });
+    let fichier = lecture_fichier('data.json');
     var choice = require('prompt');
     choice.start();
 
@@ -102,7 +106,7 @@ function supprimer_tache() {
         }
 
         let nv_fichJSON = JSON.stringify(fichJson);
-
+        console.log(nv_fichJSON);
         fs.writeFile('data.json', nv_fichJSON, {
             flag: 'w'
         }, err => {});
@@ -114,12 +118,6 @@ function supprimer_tache() {
 
 function menu_accueil() {
 
-    const fs = require('fs');
-
-    fs.open('data.json', "a+", function (err) {
-        if (err) throw err;
-    });
-
     console.log("Bienvenue sur ma TODO liste !");
     console.log("1 : lire liste de tâche, 2 : rentrez une tâche, 3 : supprimer tâche");
     var choice = require('prompt');
@@ -127,19 +125,20 @@ function menu_accueil() {
 
     choice.get(['choix'], function (err, result) {
         if (err) throw err;
-        if (result.choix == 1) {
+        if (result.choix == 1) { // afficher tache
+
             liste_tache();
-        } else if (result.choix == 2) {
+        } else if (result.choix == 2) { // ajout tache
             var choice = require('prompt');
             choice.start();
             console.log('Veuillez rentrer la tâche à exécuter : ' + ' ');
-            choice.get(['tache'],function (err, result2) {
+            choice.get(['tache'], function (err, result) {
                 if (err) throw err;
+                ajouter_tache(result.tache);
                 liste_tache();
-                ajouter_tache(result2.tache);
-            } );
+            });
 
-        } else if (result.choix == 3) {
+        } else if (result.choix == 3) { // suppresion tache
             liste_tache();
             supprimer_tache();
         } else {
