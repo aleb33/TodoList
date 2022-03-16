@@ -1,0 +1,10 @@
+li#connexion {
+    position: right;
+    right : 5px;
+}  
+
+div.contenu {
+    position: relative;
+    /*left : 5%;*/    
+}
+

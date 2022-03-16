@@ -1,38 +1,64 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion </title>
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion </title>
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="index.css">
 
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Gestionnaire des tâches</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      
-          <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Accueil
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Groupes</a>
-              </li>
-              <li class="nav-item" id="connexion">
-                <a class="nav-link" href="#">Connexion</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Gestionnaire des tâches</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Accueil
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Groupes</a>
+          </li>
+          <li class="nav-item" id="connexion">
+            <a class="nav-link" href="#">Connexion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="contenu">
+    <h1>Bienvenue sur le Gestionnaire de tâches !</h1>
+    <h2>Déjà inscrit ?</h2>
+    <div class="form-group">
+      <label class="form-label mt-4">Se connecter</label>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="exemple@gmail.com">
+        <label for="floatingInput">Adresse mail</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Mot de passe">
+        <label for="floatingPassword">Mot de passe</label>
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-lg btn-primary" type="button">Connexion</button>
+      </div>
+      <h2>Nouveau sur le site ?</h2>
+      <div class="d-grid gap-2">
+        <button class="btn btn-lg btn-primary" type="button"
+          onclick="window.location='formulaire.html'">S'inscrire</button>
+      </div>
+    </div>
 </body>
+
 </html>
