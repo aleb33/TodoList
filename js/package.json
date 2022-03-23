@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/Alois-B/TP1-methNum#readme",
   "dependencies": {
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1",
     "prompt": "^1.2.2",
     "prompt-async": "^0.9.9",
     "prompt-sync": "^4.1.6",
