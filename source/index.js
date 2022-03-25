@@ -11,9 +11,12 @@ const client = new MongoClient(url);
 function errorEmail(){
     let emailInput = document.querySelector(".email")
     let emailError = document.querySelector(".email-error")
-    emailInput.value = ""
-    emailError.value = ""
+    
+    let inputEmail = document.querySelector("#floatingInput");
+    let inputEmailError = document.querySelector("#floatingInputInvalid")
 
+    inputEmail.value = ""
+    inputEmailError.value = ""
     emailInput.setAttribute("hidden", "")
     emailError.removeAttribute("hidden")
 
@@ -22,18 +25,39 @@ function errorEmail(){
 function validEmail(){
     let emailInput = document.querySelector(".email")
     let emailError = document.querySelector(".email-error")
-    emailError.value = ""
+
+    let inputEmailError = document.querySelector("#floatingInputInvalid")
+    inputEmailError.value = ""
 
     emailError.setAttribute("hidden", "")
-    emailInput.removeAttribute("hidden")
+    emailInput.removeAttribute("hidden")    
+
+}
+
+function validEmailError(){
+    let emailInput = document.querySelector(".email")
+    let emailError = document.querySelector(".email-error")
+
+    let inputEmail = document.querySelector("#floatingInput");
+    inputEmail.value = ""
+
+    emailError.setAttribute("hidden", "")
+    emailInput.removeAttribute("hidden") 
 
 }
 
 function getEmail(){
-    var email = document.querySelector("#floatingInput")
+    var email = document.querySelector(".form-control#floatingInput")
+    var email_error = document.querySelector(".is-invalid#floatingInputInvalid")
+    
     if (!validerEmail(email.value)){
-        errorEmail();
-        return
+        if (!validerEmail(email_error.value)){
+            errorEmail();
+            return
+        } else {
+            validEmailError();
+            return email_error
+        }
     } else {
         validEmail();
     }
@@ -42,7 +66,7 @@ function getEmail(){
 }
 
 function validerEmail(email) {
-    var re = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
+    var re = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
     return re.test(email)
 }
 
