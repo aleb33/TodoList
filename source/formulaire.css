@@ -3,19 +3,22 @@
     right: 5px;
 }
 
+#Inscription {
+    margin: auto;
+    margin-top: 1.0rem;
+    text-align: center;
+}
+
 #contenu1 {
     margin-top: 2.9rem;
     text-align: center;
 }
 
-#connexion-bar {
-    width: 40%;
+#bar,
+#bar-inscription {
+    width: 90%;
     margin: auto;
     margin-bottom: 0.5rem;
-}
-
-#floatingPassword {
-    margin-bottom: .5rem;
 }
 
 div.contenu {
