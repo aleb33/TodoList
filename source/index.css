@@ -1,10 +1,22 @@
-li#connexion {
-    position: right;
-    right : 5px;
-}  
+#connexion {
+    position: absolute;
+    right: 5px;
+}
+
+#contenu1 {
+    margin-top: .5rem;
+    text-align: center;
+}
+
+#connexion-bar {
+    width: 40%;
+    margin: auto;
+}
+
+#floatingPassword {
+    margin-bottom: .5rem;
+}
 
 div.contenu {
     position: relative;
-    /* left : 5%;     */
 }
-

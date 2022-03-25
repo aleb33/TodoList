@@ -15,19 +15,19 @@ app.get('/formulaire',(req,res) => {
   //__dirname : It will resolve to your project folder.
 });
 
-app.get('/listing_groupe',(req,res) => {
+app.post('/listing_groupe',(req,res) => {
   res.sendFile('listing_groupe.html',{root: source, mime:'text/css'});
   //__dirname : It will resolve to your project folder.
 });
-app.get('/listing_tache',(req,res) => {
+app.post('/listing_tache',(req,res) => {
   res.sendFile('listing_tache.html',{root: source, mime:'text/css'});
   //__dirname : It will resolve to your project folder.
 });
-app.get('/modifier_groupe',(req,res) => {
+app.post('/modifier_groupe',(req,res) => {
   res.sendFile('modifier_groupe.html',{root: source, mime:'text/css'});
   //__dirname : It will resolve to your project folder.
 });
-app.get('/modifier_tache',(req,res) => {
+app.post('/modifier_tache',(req,res) => {
   res.sendFile('modifier_tache.html',{root: source, mime:'text/css'});
   //__dirname : It will resolve to your project folder.
 });
