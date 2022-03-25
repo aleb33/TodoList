@@ -8,11 +8,10 @@
   <title>GDT - Bienvenue</title>
   <link href="bootstrap.min.css" rel="stylesheet">
   <link href="index.css" rel="stylesheet">
-  <script src="index.js"></script>
 
 </head>
 
-<body>
+<body onload="connexion_client()">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Gestionnaire des tâches</a>
@@ -43,20 +42,31 @@
     <h2 >Déjà inscrit ?</h2>
     <div class="form-group" >
       <label class="form-label mt-4">Se connecter</label>
-      <div id="connexion-bar" class="form-floating mb-3" >
+      
+      <div id="connexion-bar" class="form-floating mb-3 email">
         <input type="email" class="form-control" id="floatingInput" placeholder="exemple@gmail.com">
         <label for="floatingInput">Adresse mail</label>
       </div>
-      <div  id="connexion-bar" class="form-group has-danger" hidden>
-        <input type="text" value="exemple@gmail.com" class="form-control is-invalid" id="inputInvalid">
+
+      <div  id="connexion-bar" class="form-floating mb-3 has-danger email-error" hidden>
+        <input type="email" placeholder="exemple@gmail.com" class="form-control is-invalid" id="floatingInputInvalid">
+        <label for ="floatingInputInvalid">Adresse mail</label>
         <div class="invalid-feedback">Désolé votre adresse semble ne pas être valide.</div>
       </div>
-      <div  id="connexion-bar"class="form-floating">
+
+      <div  id="connexion-bar"class="form-floating password" >
         <input type="password" class="form-control" id="floatingPassword" placeholder="Mot de passe">
         <label for="floatingPassword">Mot de passe</label>
       </div>
+
+      <div  id="connexion-bar"class="form-floating has-danger password-error" hidden>
+        <input type="password" class="form-control is-invalid" id="floatingPasswordInvalid" placeholder="Mot de passe">
+        <label for="floatingPasswordInvalid">Mot de passe</label>
+        <div class="invalid-feedback">Mot de passe invalide</div>
+      </div>
+      
       <div class="d-grid gap-2">
-        <button id="connexion-bar"class="btn btn-lg btn-primary"  type="button" onclick="receiveID();">Connexion</button>
+        <button id="connexion-bar"class="btn btn-lg btn-primary btn-connexion"  type="button" >Connexion</button>
       </div>
       <h2>Nouveau sur le site ?</h2>
       <div class="d-grid gap-2">
@@ -66,6 +76,6 @@
     </div>
 </body>
 
-
+<script src="./index.js"></script>
 
 </html>

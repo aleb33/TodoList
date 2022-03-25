@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 app.use(express.static('./source/'));
+app.use(express.static('./js/'));
+
 const source='./source/';
 
 

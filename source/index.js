@@ -1,3 +1,4 @@
+
 // connexion à la bdd
 const MongoClient = require('mongodb').MongoClient;
 
@@ -7,11 +8,35 @@ const dbName = 'myFirstDatabase';
 const client = new MongoClient(url);
 
 
+function errorEmail(){
+    let emailInput = document.querySelector(".email")
+    let emailError = document.querySelector(".email-error")
+    emailInput.value = ""
+    emailError.value = ""
+
+    emailInput.setAttribute("hidden", "")
+    emailError.removeAttribute("hidden")
+
+}
+
+function validEmail(){
+    let emailInput = document.querySelector(".email")
+    let emailError = document.querySelector(".email-error")
+    emailError.value = ""
+
+    emailError.setAttribute("hidden", "")
+    emailInput.removeAttribute("hidden")
+
+}
 
 function getEmail(){
     var email = document.querySelector("#floatingInput")
-    console.log(email.value)
-    console.log(validerEmail(email.value))
+    if (!validerEmail(email.value)){
+        errorEmail();
+        return
+    } else {
+        validEmail();
+    }
 
     return email
 }
@@ -29,6 +54,9 @@ function validerPassword(password){
 function getPassword(){
     var password = document.querySelector("#floatingPassword")
 
+    if (!validerPassword(password)){
+         
+    }
     console.log(password.value)
     console.log(validerPassword(password.value))
 
@@ -43,4 +71,10 @@ function receiveID(){
     return [email, password];
 }
 
-export {validerEmail, validerPassword}
+function connexion_client(){
+    let buttonConnexion = document.querySelector(".btn-connexion")
+
+    buttonConnexion.addEventListener('click', function(){
+        receiveID();
+    })
+}

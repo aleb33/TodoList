@@ -1,4 +1,4 @@
-import {validerEmail, validerPassword} from "index.js"
+import {validerEmail, validerPassword, client, MongoClient, url, dbName} from "index.js"
 
 
 function getEmail_sub(){
@@ -8,7 +8,7 @@ function getEmail_sub(){
 
     }
 
-    
+
 
     return email
 }
@@ -19,14 +19,12 @@ function getPassword_sub(){
     var confirm_password = document.querySelector('#InputConfirmPassword')
 
     if (!validerPassword(password)){
-        
+         
     }
     if (password.value !== confirm_password.value){
         
     }
 
-    console.log(password.value)
-    console.log(validerPassword(password.value))
 
     return password
 }
