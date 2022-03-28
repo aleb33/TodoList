@@ -1,13 +1,4 @@
 
-// connexion à la bdd
-// const MongoClient = require('mongodb').MongoClient;
-
-// const url = 'mongodb+srv://allUser:fuLPFQQiZMDtH3VM@cluster0.6hn6y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-// const dbName = 'myFirstDatabase';
-
-// const client = new MongoClient(url);
-
-
 function errorEmail(){
     let emailInput = document.querySelector(".email")
     let emailError = document.querySelector(".email-error")
