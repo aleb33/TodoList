@@ -23,9 +23,9 @@
         </div>
     </div>
 </nav>
-<form action="/listing_groupe" method="post">
+<form action="listing_group" method="post">
     <br>
-    <button type="button" class="btn btn-outline-primary">Ajouter un groupe</button>
+    <button type="submit" name="add" id="button-add" onclick="add_group()" class="btn btn-outline-primary">Ajouter un groupe</button>
     <br>
     <% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
     <div class="card text-white bg-info mb-3" style="max-width: 20rem;">

@@ -1,4 +1,5 @@
 const express = require('express');
+const randomstring = require("randomstring");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
@@ -59,17 +60,20 @@ app.get('/formulaire', (req, res) => {
 });
 
 app.get('/listing_groupe', (req, res) => {
-  
+
   groupe_tache.findOne({
     id: idConnected
   }, function (err, docs) {
     if (err)
-    console.log(err)
+      console.log(err)
     else
-    groupTache = docs
-    res.render("list_group", {idConnected, groupTache})
+      groupTache = docs
+    res.render("list_group", {
+      idConnected,
+      groupTache
+    })
   })
-  
+
 
 });
 
@@ -109,13 +113,6 @@ app.post("/", function (req, res) {
   var email = req.body.email
   var passwrd = req.body.passwrd
 
-  // if (!RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email)) {
-  //   // case email doesn't work
-  // }
-  // if (!RegExp(/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/).test(passwrd)) {
-  //   // case pswd doesn't work
-  // }
-
   id.findOne({
     id: email
   }, function (err, docs) {
@@ -125,9 +122,8 @@ app.post("/", function (req, res) {
       if (docs == null) {
         res.redirect('/')
       } else {
-        console.log("First function call : ", docs);
-        res.redirect('/listing_groupe')
         idConnected = docs.id
+        res.redirect('/listing_groupe')
       }
     }
   });
@@ -164,7 +160,7 @@ app.post("/formulaire", function (req, res) {
     const newGroupTache = new groupe_tache({
       id: email,
       groupe_tache: [{
-        id_grp_tache: idConnected + groupTache, 
+        id_grp_tache: idConnected + groupTache,
         name_groupe: "test"
       }]
     })
@@ -184,7 +180,19 @@ app.post("/formulaire", function (req, res) {
 
 })
 
-app.post("/listing_group", function(req, res){
+app.post("/listing_group", function (req, res) {
 
+  if (req.body.add_input == "") {
+    groupTache.groupe_tache.push({
+      id_grp_tache: idConnected + randomstring.generate(5),
+      name_groupe: ""
+    })
+  } else {
+    groupTache.groupe_tache.push({
+      id_grp_tache: idConnected + req.body.add_input,
+      name_groupe: req.body.add_input
+    })
+  }
 
+  res.redirect("/listing_group")
 })
