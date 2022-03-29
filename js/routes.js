@@ -21,7 +21,17 @@ const idSchema = {
   lastname: String
 }
 
+const groupe_tacheSchema = {
+
+}
+
+const tacheSchema = {
+
+}
+
 const id = mongoose.model("users", idSchema)
+const groupe_tache = mongoose.model("group_tache", groupe_tacheSchema)
+const tache = mongoose.model("tache", tacheSchema)
 
 // Exemple
 // const id1 = new id({
@@ -100,14 +110,12 @@ app.post("/", function (req, res) {
   var email = req.body.email
   var passwrd = req.body.passwrd
 
-  if (!RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email)) {
-    // case email doesn't work
-    errorEmail(window.location.href = "./source/index.html")
-  }
-  if (!RegExp(/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/).test(passwrd)) {
-    // case pswd doesn't work
-    console.log("Pas correct 2")
-  }
+  // if (!RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email)) {
+  //   // case email doesn't work
+  // }
+  // if (!RegExp(/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/).test(passwrd)) {
+  //   // case pswd doesn't work
+  // }
 
   id.findOne({
     id: email
@@ -115,12 +123,17 @@ app.post("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log("First function call : ", docs);
+      if (docs == null){
+        res.redirect('/')
+      } else {
+        console.log("First function call : ", docs);
+        res.redirect('/listing_groupe')
+      }
     }
   });
 
 
-  res.redirect('/')
+  
 })
 
 
@@ -133,19 +146,27 @@ app.post("/formulaire", function (req, res) {
   var fName = req.body.fName
   var lName = req.body.lName
 
+  if (!RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email) || Cpasswrd != passwrd) {
+    res.sendFile('formulaire.html', {
+      root: source,
+      mime: 'text/css'
+    });
+  } else {
 
-  const newId = new id({
-    id: email,
-    password: passwrd,
-    phone: Nphone,
-    firstname: fName,
-    lastname: lName
-  })
+    const newId = new id({
+      id: email,
+      password: passwrd,
+      phone: Nphone,
+      firstname: fName,
+      lastname: lName
+    })
 
-  id.insertMany(newId, function (err) {
-    if (err)
-      console.log(err)
-  })
+    id.insertMany(newId, function (err) {
+      if (err)
+        console.log(err)
+    })
 
-  res.redirect('/')
+    res.redirect('/')
+  }
+
 })
