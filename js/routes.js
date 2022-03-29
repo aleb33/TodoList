@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const router = express.Router();
+let idConnected, groupTache;
 app.use(express.static('./source/'));
 app.use(express.static('./js/'));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.set("view engine", "ejs")
 
 // connexion à la bdd
 const url = 'mongodb+srv://allUser:fuLPFQQiZMDtH3VM@cluster0.6hn6y.mongodb.net/todolist?retryWrites=true&w=majority'
@@ -22,7 +24,11 @@ const idSchema = {
 }
 
 const groupe_tacheSchema = {
-
+  id: String,
+  groupe_tache: [{
+    id_grp_tache: String,
+    name_groupe: String
+  }]
 }
 
 const tacheSchema = {
@@ -30,24 +36,8 @@ const tacheSchema = {
 }
 
 const id = mongoose.model("users", idSchema)
-const groupe_tache = mongoose.model("group_tache", groupe_tacheSchema)
-const tache = mongoose.model("tache", tacheSchema)
-
-// Exemple
-// const id1 = new id({
-//   id: "test@gmail.com",
-//   password: "azerty123",
-//   phone: 0404040404,
-//   firstname: "etienne",
-//   lastname: "montdu"
-// })
-
-// id.insertMany(id1, function (err) {
-//   if (err)
-//     console.log(err)
-//   else
-//     console.log("Successfully add !")
-// })
+const groupe_tache = mongoose.model("groupe_tache", groupe_tacheSchema)
+const tache = mongoose.model("taches", tacheSchema)
 
 const source = './source/';
 
@@ -68,14 +58,23 @@ app.get('/formulaire', (req, res) => {
   //__dirname : It will resolve to your project folder.
 });
 
-app.post('/listing_groupe', (req, res) => {
-  res.sendFile('listing_groupe.html', {
-    root: source,
-    mime: 'text/css'
-  });
-  //__dirname : It will resolve to your project folder.
+app.get('/listing_groupe', (req, res) => {
+  
+  groupe_tache.findOne({
+    id: idConnected
+  }, function (err, docs) {
+    if (err)
+    console.log(err)
+    else
+    groupTache = docs
+    res.render("list_group", {idConnected, groupTache})
+  })
+  
+
 });
-app.post('/listing_tache', (req, res) => {
+
+
+app.get('/listing_tache', (req, res) => {
   res.sendFile('listing_tache.html', {
     root: source,
     mime: 'text/css'
@@ -123,17 +122,18 @@ app.post("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (docs == null){
+      if (docs == null) {
         res.redirect('/')
       } else {
         console.log("First function call : ", docs);
         res.redirect('/listing_groupe')
+        idConnected = docs.id
       }
     }
   });
 
 
-  
+
 })
 
 
@@ -161,12 +161,30 @@ app.post("/formulaire", function (req, res) {
       lastname: lName
     })
 
+    const newGroupTache = new groupe_tache({
+      id: email,
+      groupe_tache: [{
+        id_grp_tache: idConnected + groupTache, 
+        name_groupe: "test"
+      }]
+    })
+
     id.insertMany(newId, function (err) {
+      if (err)
+        console.log(err)
+    })
+
+    groupe_tache.insertMany(newGroupTache, function (err) {
       if (err)
         console.log(err)
     })
 
     res.redirect('/')
   }
+
+})
+
+app.post("/listing_group", function(req, res){
+
 
 })

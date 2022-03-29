@@ -1,0 +1,40 @@
+<%- include("header_groupe") -%>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Gestionnaire des tâches</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
+            aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Accueil
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Groupes</a>
+                </li>
+                <li class="nav-item" id="connexion">
+                    <a class="nav-link" href="#"><%- idConnected -%></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<form action="/listing_groupe" method="post">
+    <br>
+    <button type="button" class="btn btn-outline-primary">Ajouter un groupe</button>
+    <br>
+    <% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
+    <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+        <div class="card-header">Groupe <%= i+1 %></div>
+        <div class="card-body">
+            <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
+            <p class="card-text"></p>
+        </div>
+        <button type="submit" class="btn btn-outline-danger">Supprimer le groupe</button>
+    </div>
+    <% } %>
+</form>
