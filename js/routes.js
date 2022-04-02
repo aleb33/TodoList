@@ -88,7 +88,6 @@ app.get('/listing_tache', (req, res) => {
       console.log(err)
     else
       gtaches = docs
-      idConnected="testGroup@mail.com"
       res.render("list_tache", {
         idConnected,
         gtaches
@@ -208,6 +207,8 @@ app.post("/add_group", function (req, res) {
 })
 
 
+
+
 app.post("/mod_group", function (req, res) {
 
   let indice_arr = req.body.mod
@@ -250,3 +251,79 @@ app.post("/del_group", function (req, res) {
     })
   
   })
+
+
+
+  //fais la meme chose mais pour add_tache
+app.post("/add_tache", function (req, res) {
+  
+    if (req.body.add_input == "") {
+      gtaches.taches.push({
+        id_tache: idTache + randomstring.generate(5),
+        name_tache: ""
+      })
+    } else {
+      gtaches.taches.push({
+        id_tache: idTache + req.body.add_input,
+        name_tache: req.body.add_input
+      })
+    }
+  
+    // mettre a jour la collection groupTache dans mongodb
+    taches.updateOne({
+      id: idTache
+    }, {
+      $set: {
+        taches: gtaches.taches
+      }
+    }, function (err, result) {
+      if (err)
+        console.log(err)
+      else
+        res.redirect('/listing_tache')
+    })
+  
+  })
+
+app.post("/mod_tache", function (req, res) {
+    
+      let indice_arr = req.body.mod
+      gtaches.taches[indice_arr].name_tache = req.body.mod_input
+    
+      // mettre a jour la collection groupTache dans mongodb
+      taches.updateOne({
+        id: idTache
+      }, {
+        $set: {
+          taches: gtaches.taches
+        }
+      }, function (err, result) {
+        if (err)
+          console.log(err)
+        else
+          res.redirect('/listing_tache')
+      })
+    
+})
+
+//faire la meme chose pour supprimer une tache
+app.post("/del_tache", function (req, res) {
+        
+          let id_tache_del = req.body.del
+          gtaches.taches.splice(id_tache_del, 1)
+        
+          // mettre a jour la collection groupTache dans mongodb
+          taches.updateOne({
+            id: idTache
+          }, {
+            $set: {
+              taches: gtaches.taches
+            }
+          }, function (err, result) {
+            if (err)
+              console.log(err)
+            else
+              res.redirect('/listing_tache')
+          })
+})
+
