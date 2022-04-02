@@ -31,18 +31,23 @@
         <th scope="col">Tâches à effectuer</th>
       </tr>
     </thead>
-    
       <tbody>
        <% for(var i=0 ; i<gtaches.taches.length; i++) {  %>
         <tr class="table-primary">
-          <th scope="row"> <%= gtaches.taches[i].name_tache %> <button type="button"  id="modifier" class="btn btn-primary">Modifier</button> 
-          <button type="button" id="supprimer" class="btn btn-primary">Supprimer</button></th>
+          <th scope="row"> <%= gtaches.taches[i].name_tache %>
+             <form action="/mod_tache" method="post">
+              <button type="button" onclick="mod_button(<%=i%>)" class="btn btn-mod btn-outline-warning">Modifier</button>
+             </form> 
+             <form action="/del_tache" method="post">
+              <button type="submit" name="del" value="<%= i%>"
+                  class="btn btn-del btn-outline-danger">Supprimer</button>
+             </form>
         </tr>
         <% } %>
       </tbody>
   </table>
-  <br>
-    <button type="submit" name="add" id="button-add" onclick="add_tache()" class="btn btn-outline-primary">Ajouter Tâche</button>
-  <br>
 </form> 
+<form action="/add_tache" method="post">
+    <button type="button" name="add" id="button-add" onclick="add_tache()" class="btn btn-outline-primary">Ajouter une tâche</button>
+</form>
   

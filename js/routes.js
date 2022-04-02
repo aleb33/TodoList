@@ -95,6 +95,7 @@ app.get('/listing_tache', (req, res) => {
   })
   //__dirname : It will resolve to your project folder.
 });
+
 app.post('/modifier_groupe', (req, res) => {
   res.sendFile('modifier_groupe.html', {
     root: source,
@@ -263,7 +264,6 @@ app.post("/del_group", function (req, res) {
 
 
 app.post("/listing_tache", function(req, res){
-
   idTache = req.body.tache
   taches.findOne({
     id: idTache
@@ -273,9 +273,89 @@ app.post("/listing_tache", function(req, res){
     else
       if (docs == null) {
         res.redirect("/listing_groupe")
+      }else{
+        gtaches = docs
+        res.redirect('/listing_tache')
       }
-      gtaches = docs
-      res.redirect('/listing_tache')
+      
   })
 
 })
+
+  //fais la meme chose mais pour add_tache
+app.post("/add_tache", function (req, res) {
+    let name_tache = req.body.add_input
+  
+    taches.findOne({
+      id: idTache
+    }, function (err, docs) {
+      if (err)
+        console.log(err)
+      else
+        if (docs == null) {
+          res.redirect("/listing_tache")
+        }
+        else {
+          docs.taches.push({
+            id_tache: idTache+randomstring.generate(5),
+            name_tache: name_tache
+          })
+  
+          taches.updateOne({
+            id: idTache
+          }, {
+            $set: {
+              taches: docs.taches
+            }
+          }, function (err, result) {
+            if (err)
+              console.log(err)
+            else
+              res.redirect('/listing_tache')
+          })
+        }
+    })
+  
+  })
+
+  // faire la même chose mais pour del_tache
+  app.post("/del_tache", function (req, res) {
+      let id_tache_del = req.body.del;
+      console.log(id_tache_del);
+
+      gtaches.taches.splice(id_tache_del, 1)
+      //mettre à jour la collection gtaches dans mongodb
+      taches.updateOne({
+        id: idTache
+      }, {
+        $set: {
+          taches: gtaches.taches
+        }
+      }, function (err, result) {
+        if (err)
+          console.log(err)
+        else
+          res.redirect('/listing_tache')
+      }
+      )
+    })
+
+    app.post("/mod_tache", function (req, res) {
+      let indice_arr = req.body.mod
+      gtaches.taches[indice_arr].name_tache = req.body.mod_input
+      
+      //mettre à jour la collection gtaches dans mongodb
+      taches.updateOne({
+        id: idTache
+      }, {
+        $set: {
+          taches: gtaches.taches
+        }
+      }, function (err, result) {
+        if (err)
+          console.log(err)
+        else
+          res.redirect('/listing_tache')
+      }
+      )
+    })
