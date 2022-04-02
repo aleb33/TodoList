@@ -167,35 +167,7 @@ app.post("/formulaire", function (req, res) {
       lastname: lName
     })
 
-    const newGroupTache = new groupe_tache({
-      id: email,
-      groupe_tache: [{
-        id_grp_tache: idConnected + groupTache,
-        name_groupe: "test"
-      }]
-    })
-
-    idTache=idConnected + groupTache;
-
-    const newTaches = new taches({
-      id: idTache,
-      taches: [{
-        id_tache: "tache1",
-        name_tache: "test"
-      }]
-    })
-
     id.insertMany(newId, function (err) {
-      if (err)
-        console.log(err)
-    })
-
-    groupe_tache.insertMany(newGroupTache, function (err) {
-      if (err)
-        console.log(err)
-    })
-
-    taches.insertMany(newTaches, function (err) {
       if (err)
         console.log(err)
     })
@@ -205,7 +177,7 @@ app.post("/formulaire", function (req, res) {
 
 })
 
-app.post("/listing_group", function (req, res) {
+app.post("/add_group", function (req, res) {
 
   if (req.body.add_input == "") {
     groupTache.groupe_tache.push({
@@ -218,35 +190,63 @@ app.post("/listing_group", function (req, res) {
       name_groupe: req.body.add_input
     })
   }
-  res.redirect("/listing_group")
-})
 
-app.post("/listing_tache", function (req, res) {
-  
-  if (req.body.add_input == "") {
-    gtaches.taches.push({
-      id_tache: idTache + randomstring.generate(5),
-      name_tache: ""
-    })
-  } else {
-    gtaches.taches.push({
-      id_tache: idTache + randomstring.generate(5),
-      name_tache: req.body.add_input
-    })
-  }
-  //mettre à jour la collection gtaches
-  gtaches.updateOne({
-    id: "testGroup@mail.comManger"
+  // mettre a jour la collection groupTache dans mongodb
+  groupe_tache.updateOne({
+    id: idConnected
   }, {
     $set: {
-      taches: gtaches.taches
+      groupe_tache: groupTache.groupe_tache
     }
-  }, function (err, docs) {
+  }, function (err, result) {
     if (err)
       console.log(err)
     else
-      console.log(docs)
+      res.redirect('/listing_groupe')
   })
 
-  res.redirect("/listing_tache")
 })
+
+
+app.post("/mod_group", function (req, res) {
+
+  let indice_arr = req.body.mod
+  groupTache.groupe_tache[indice_arr].name_groupe = req.body.mod_input
+
+  // mettre a jour la collection groupTache dans mongodb
+  groupe_tache.updateOne({
+    id: idConnected
+  }, {
+    $set: {
+      groupe_tache: groupTache.groupe_tache
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_groupe')
+  })
+
+})
+
+// faire la même chose mais pour del_button
+app.post("/del_group", function (req, res) {
+  
+    let id_grp_del = req.body.del
+    groupTache.groupe_tache.splice(id_grp_del, 1)
+  
+    // mettre a jour la collection groupTache dans mongodb
+    groupe_tache.updateOne({
+      id: idConnected
+    }, {
+      $set: {
+        groupe_tache: groupTache.groupe_tache
+      }
+    }, function (err, result) {
+      if (err)
+        console.log(err)
+      else
+        res.redirect('/listing_groupe')
+    })
+  
+  })

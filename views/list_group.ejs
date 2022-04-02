@@ -23,20 +23,24 @@
         </div>
     </div>
 </nav>
-<form action="listing_group" method="post">
+<br>
+<form action="/add_group" method="post">
+    <button type="button" name="add" id="button-add" onclick="add_group()" class="btn btn-outline-primary">Ajouter un
+        groupe</button>
     <br>
-    <button type="submit" name="add" id="button-add" onclick="add_group()" class="btn btn-outline-primary">Ajouter un groupe</button>
-    <br>
-    
-    <% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
-    <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
-        <div class="card-header">Groupe <%= i+1 %></div>
-        <div class="card-body">
-            <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
-            <p class="card-text"></p>
-        </div>
-        <button type="submit" class="btn btn-outline-warning">Modifier le groupe</button>
-        <button type="submit" class="btn btn-outline-danger">Supprimer le groupe</button>
-    </div>
-    <% } %>
 </form>
+<% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
+<div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+    <div class="card-header">Groupe <%= i+1 %></div>
+    <div class="card-body">
+        <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
+        <p class="card-text"></p>
+    </div>
+    <form action="/mod_group" method="post">
+        <button type="button" onclick="mod_button(<%=i%>)" class="btn btn-mod btn-outline-warning">Modifier le groupe</button>
+    </form>
+    <form action="/del_group" method="post">
+        <button type="submit" name="del" value="<%= groupTache.groupe_tache[i].id_grp_tache%>" class="btn btn-del btn-outline-danger">Supprimer le groupe</button>
+    </form>
+</div>
+<% } %>
