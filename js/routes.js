@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const router = express.Router();
-let idConnected, groupTache;
+let idConnected, idTache, groupTache, gtaches;
 app.use(express.static('./source/'));
 app.use(express.static('./js/'));
 app.use(bodyParser.urlencoded({
@@ -33,12 +33,16 @@ const groupe_tacheSchema = {
 }
 
 const tacheSchema = {
-
+  id: String,
+  taches: [{
+    id_tache: String,
+    name_tache: String
+  }]
 }
 
 const id = mongoose.model("users", idSchema)
 const groupe_tache = mongoose.model("groupe_tache", groupe_tacheSchema)
-const tache = mongoose.model("taches", tacheSchema)
+const taches = mongoose.model("taches", tacheSchema)
 
 const source = './source/';
 
@@ -60,7 +64,6 @@ app.get('/formulaire', (req, res) => {
 });
 
 app.get('/listing_groupe', (req, res) => {
-
   groupe_tache.findOne({
     id: idConnected
   }, function (err, docs) {
@@ -77,12 +80,20 @@ app.get('/listing_groupe', (req, res) => {
 
 });
 
-
 app.get('/listing_tache', (req, res) => {
-  res.sendFile('listing_tache.html', {
-    root: source,
-    mime: 'text/css'
-  });
+  taches.findOne({
+    id: idTache
+  }, function (err, docs) {
+    if (err)
+      console.log(err)
+    else
+      gtaches = docs
+      idConnected="testGroup@mail.com"
+      res.render("list_tache", {
+        idConnected,
+        gtaches
+      })
+  })
   //__dirname : It will resolve to your project folder.
 });
 app.post('/modifier_groupe', (req, res) => {
@@ -127,10 +138,9 @@ app.post("/", function (req, res) {
       }
     }
   });
-
-
-
 })
+
+
 
 
 app.post("/formulaire", function (req, res) {
@@ -165,12 +175,27 @@ app.post("/formulaire", function (req, res) {
       }]
     })
 
+    idTache=idConnected + groupTache;
+
+    const newTaches = new taches({
+      id: idTache,
+      taches: [{
+        id_tache: "tache1",
+        name_tache: "test"
+      }]
+    })
+
     id.insertMany(newId, function (err) {
       if (err)
         console.log(err)
     })
 
     groupe_tache.insertMany(newGroupTache, function (err) {
+      if (err)
+        console.log(err)
+    })
+
+    taches.insertMany(newTaches, function (err) {
       if (err)
         console.log(err)
     })
@@ -193,6 +218,35 @@ app.post("/listing_group", function (req, res) {
       name_groupe: req.body.add_input
     })
   }
-
   res.redirect("/listing_group")
+})
+
+app.post("/listing_tache", function (req, res) {
+  
+  if (req.body.add_input == "") {
+    gtaches.taches.push({
+      id_tache: idTache + randomstring.generate(5),
+      name_tache: ""
+    })
+  } else {
+    gtaches.taches.push({
+      id_tache: idTache + randomstring.generate(5),
+      name_tache: req.body.add_input
+    })
+  }
+  //mettre à jour la collection gtaches
+  gtaches.updateOne({
+    id: "testGroup@mail.comManger"
+  }, {
+    $set: {
+      taches: gtaches.taches
+    }
+  }, function (err, docs) {
+    if (err)
+      console.log(err)
+    else
+      console.log(docs)
+  })
+
+  res.redirect("/listing_tache")
 })

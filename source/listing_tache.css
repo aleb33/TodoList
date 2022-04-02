@@ -1,0 +1,40 @@
+#connexion {
+    position: absolute;
+    right: 5px;
+}
+
+#contenu1 {
+    margin-top: 2.9rem;
+    text-align: center;
+}
+
+#tache {
+    text-align: center;
+    margin: auto;
+    line-height: 3.5;
+}
+
+#connexion-bar {
+    width: 40%;
+    margin: auto;
+    margin-bottom: 0.5rem;
+}
+
+#floatingPassword {
+    margin-bottom: .5rem;
+}
+
+div.contenu {
+    position: relative;
+}
+
+#supprimer {
+    position: absolute;
+    right: 5px;
+}
+
+#modifier {
+    position: absolute;
+    right: 150px;
+    margin: auto;
+}

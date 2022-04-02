@@ -95,3 +95,22 @@ function connexion_client(){
 }
 
 export { validerEmail, validerPassword };
+
+
+function add_tache() {
+    let button_add = document.querySelector('#button-add')
+
+    let newTr = document.createElement('tr')
+    newTr.setAttribute("class")
+    let newButton = document.createElement("button")
+    newButton.setAttribute("class", "btn btn-primary")
+    newButton.setAttribute("type", "submit")
+
+    newDiv.innerHTML = `<label class="col-form-label mt-4" for="inputDefault">Tache</label>
+    <input type="text" name="add_input" class="form-control" placeholder="Nom de la Tache" id="inputDefault"> `
+
+    newButton.innerHTML = `Ajouter`
+
+    button_add.insertAdjacentElement("afterend", newDiv)
+    newDiv.insertAdjacentElement("afterend", newButton)
+}
