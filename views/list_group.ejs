@@ -31,12 +31,14 @@
 </form>
 <% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
 <form action="/listing_tache" method="post">
-    <div name="tache" value="<%= groupTache.groupe_tache[i].id_grp_tache %>" onclick="this.form.submit()" class="card text-white bg-info mb-3" style="max-width: 20rem;">
-        <div class="card-header">Groupe <%= i+1 %></div>
-        <div class="card-body">
-            <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
-            <p class="card-text"></p>
-        </div>
+    <button type="submit" name="tache" value="<%= groupTache.groupe_tache[i].id_grp_tache %>">
+        <div  class="card text-white bg-info mb-3" style="max-width: 20rem;">
+            <div class="card-header">Groupe <%= i+1 %></div>
+            <div class="card-body">
+                <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
+                <p class="card-text"></p>
+            </div>
+    </button>
 </form>
     <form action="/mod_group" method="post">
         <button type="button" onclick="mod_button(<%=i%>)" class="btn btn-mod btn-outline-warning">Modifier le

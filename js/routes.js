@@ -212,7 +212,6 @@ app.post("/add_group", function (req, res) {
 
 app.post("/mod_group", function (req, res) {
   let indice_arr = req.body.mod
-  let id_taches = groupTache.groupe_tache[indice_arr].id_grp_tache
 
   groupTache.groupe_tache[indice_arr].name_groupe = req.body.mod_input
 
@@ -227,26 +226,7 @@ app.post("/mod_group", function (req, res) {
     if (err)
       console.log(err)
     else
-      taches.findOne({
-        id: id_taches
-      }, function (err, docs) {
-        if (err)
-          console.log(err)
-        else
-          docs.id = req.body.mod_input
-        taches.updateOne({
-          id: docs.id
-        }, {
-          $set: {
-            taches: docs.taches
-          }
-        }, function (err, result) {
-          if (err)
-            console.log(err)
-          else
-            res.redirect('/listing_groupe')
-        })
-      })
+      res.redirect("/listing_group")
   })
 
 })
@@ -279,4 +259,23 @@ app.post("/del_group", function (req, res) {
           res.redirect('/listing_groupe')
       })
   })
+})
+
+
+app.post("/listing_tache", function(req, res){
+
+  idTache = req.body.tache
+  taches.findOne({
+    id: idTache
+  }, function (err, docs) {
+    if (err)
+      console.log(err)
+    else
+      if (docs == null) {
+        res.redirect("/listing_groupe")
+      }
+      gtaches = docs
+      res.redirect('/listing_tache')
+  })
+
 })
