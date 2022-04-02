@@ -157,20 +157,7 @@ app.post("/formulaire", function (req, res) {
       lastname: lName
     })
 
-    const newGroupTache = new groupe_tache({
-      id: email,
-      groupe_tache: [{
-        id_grp_tache: idConnected + groupTache,
-        name_groupe: "test"
-      }]
-    })
-
     id.insertMany(newId, function (err) {
-      if (err)
-        console.log(err)
-    })
-
-    groupe_tache.insertMany(newGroupTache, function (err) {
       if (err)
         console.log(err)
     })
@@ -180,7 +167,7 @@ app.post("/formulaire", function (req, res) {
 
 })
 
-app.post("/listing_group", function (req, res) {
+app.post("/add_group", function (req, res) {
 
   if (req.body.add_input == "") {
     groupTache.groupe_tache.push({
@@ -194,5 +181,62 @@ app.post("/listing_group", function (req, res) {
     })
   }
 
-  res.redirect("/listing_group")
+  // mettre a jour la collection groupTache dans mongodb
+  groupe_tache.updateOne({
+    id: idConnected
+  }, {
+    $set: {
+      groupe_tache: groupTache.groupe_tache
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_groupe')
+  })
+
 })
+
+
+app.post("/mod_group", function (req, res) {
+
+  let indice_arr = req.body.mod
+  groupTache.groupe_tache[indice_arr].name_groupe = req.body.mod_input
+
+  // mettre a jour la collection groupTache dans mongodb
+  groupe_tache.updateOne({
+    id: idConnected
+  }, {
+    $set: {
+      groupe_tache: groupTache.groupe_tache
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_groupe')
+  })
+
+})
+
+// faire la même chose mais pour del_button
+app.post("/del_group", function (req, res) {
+  
+    let id_grp_del = req.body.del
+    groupTache.groupe_tache.splice(id_grp_del, 1)
+  
+    // mettre a jour la collection groupTache dans mongodb
+    groupe_tache.updateOne({
+      id: idConnected
+    }, {
+      $set: {
+        groupe_tache: groupTache.groupe_tache
+      }
+    }, function (err, result) {
+      if (err)
+        console.log(err)
+      else
+        res.redirect('/listing_groupe')
+    })
+  
+  })
