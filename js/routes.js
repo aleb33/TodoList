@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const router = express.Router();
-let idConnected, idTache, groupTache, gtaches;
+let idConnected, idTache, groupTache, gtaches, nom_Groupe_actuel;
 app.use(express.static('./source/'));
 app.use(express.static('./js/'));
 app.use(bodyParser.urlencoded({
@@ -90,7 +90,8 @@ app.get('/listing_tache', (req, res) => {
       gtaches = docs
       res.render("list_tache", {
         idConnected,
-        gtaches
+        gtaches,
+        nom_Groupe_actuel
       })
   })
   //__dirname : It will resolve to your project folder.
@@ -208,10 +209,8 @@ app.post("/add_group", function (req, res) {
 
 })
 
-
-
-
 app.post("/mod_group", function (req, res) {
+
   let indice_arr = req.body.mod
 
   groupTache.groupe_tache[indice_arr].name_groupe = req.body.mod_input
@@ -227,12 +226,11 @@ app.post("/mod_group", function (req, res) {
     if (err)
       console.log(err)
     else
-      res.redirect("/listing_group")
+      res.redirect("/listing_groupe")
   })
 
 })
 
-// faire la même chose mais pour del_button
 app.post("/del_group", function (req, res) {
 
   let id_grp_del = req.body.del
@@ -264,7 +262,8 @@ app.post("/del_group", function (req, res) {
 
 
 app.post("/listing_tache", function(req, res){
-  idTache = req.body.tache
+  idTache = req.body.IDtache
+  nom_Groupe_actuel = req.body.nameTache
   taches.findOne({
     id: idTache
   }, function (err, docs) {
