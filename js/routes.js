@@ -64,8 +64,6 @@ app.get('/formulaire', (req, res) => {
 });
 
 app.get('/listing_groupe', (req, res) => {
-
-
   groupe_tache.findOne({
     id: idConnected
   }, function (err, docs) {
@@ -357,7 +355,9 @@ app.post("/del_tache", function (req, res) {
 app.post("/mod_tache", function (req, res) {
   let indice_arr = req.body.mod
   gtaches.taches[indice_arr].name_tache = req.body.mod_input
-
+  if(gtaches.taches[indice_arr].name_tache == ""){
+    gtaches.taches.splice(indice_arr, 1)
+  }
   //mettre à jour la collection gtaches dans mongodb
   taches.updateOne({
     id: idTache

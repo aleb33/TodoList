@@ -15,10 +15,6 @@
                 <span class="visually-hidden">(current)</span>
               </a>
             </form>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Groupes</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" id="connexion" href="#"><%- idConnected -%> > <%- nom_Groupe_actuel %></a>
           </li>
@@ -26,7 +22,6 @@
       </div>
     </div>
   </nav>
-  <form action="listing_tache" method="post">
   <table id="tache" class="table table-hover">
     <thead>
       <tr>
@@ -36,20 +31,28 @@
       <tbody>
        <% for(var i=0 ; i<gtaches.taches.length; i++) {  %>
         <tr class="table-primary">
-          <th scope="row"> <%= gtaches.taches[i].name_tache %>
-             <form action="/mod_tache" method="post">
-              <button type="button" onclick="mod_button(<%=i%>)" class="btn btn-mod btn-outline-warning">Modifier</button>
-             </form> 
-             <form action="/del_tache" method="post">
-              <button type="submit" name="del" value="<%= i%>"
-                  class="btn btn-del btn-outline-danger">Supprimer</button>
-             </form>
+          <form action="listing_tache" method="post">
+
+            <th scope="row"> <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+              <label class="form-check-label" for="flexCheckChecked">
+                Done
+              </label> 
+              <%= gtaches.taches[i].name_tache %>
+              
+          </form>
+          <form action="/mod_tache" method="post">
+              <button type="button" id="modifier"  class="btn btn btn-primary btn-mod ">Modifier</button>
+          </form> 
+          <form action="/del_tache" method="post">
+              <button type="submit" id="supprimer" name="del" value="<%= i%>" class="btn btn-del btn-primary">Supprimer</button>
+          </form>
         </tr>
         <% } %>
       </tbody>
   </table>
-</form> 
+  <div id="add_div">
 <form action="/add_tache" method="post">
     <button type="button" name="add" id="button-add" onclick="add_tache()" class="btn btn-outline-primary">Ajouter une tâche</button>
 </form>
+</div>
   
