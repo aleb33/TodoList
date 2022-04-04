@@ -19,7 +19,7 @@ mongoose.connect(url)
 const idSchema = {
   id: String,
   password: String,
-  phone: Number,
+  phone: String,
   firstname: String,
   lastname: String
 }
@@ -64,6 +64,8 @@ app.get('/formulaire', (req, res) => {
 });
 
 app.get('/listing_groupe', (req, res) => {
+
+
   groupe_tache.findOne({
     id: idConnected
   }, function (err, docs) {
@@ -88,11 +90,11 @@ app.get('/listing_tache', (req, res) => {
       console.log(err)
     else
       gtaches = docs
-      res.render("list_tache", {
-        idConnected,
-        gtaches,
-        nom_Groupe_actuel
-      })
+    res.render("list_tache", {
+      idConnected,
+      gtaches,
+      nom_Groupe_actuel
+    })
   })
   //__dirname : It will resolve to your project folder.
 });
@@ -126,7 +128,8 @@ app.post("/", function (req, res) {
   var passwrd = req.body.passwrd
 
   id.findOne({
-    id: email
+    id: email,
+    password: passwrd
   }, function (err, docs) {
     if (err) {
       console.log(err);
@@ -150,7 +153,11 @@ app.post("/formulaire", function (req, res) {
   var fName = req.body.fName
   var lName = req.body.lName
 
-  if (!RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).test(email) || Cpasswrd != passwrd) {
+  var RegEmail = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+  var RegPassword = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  var RegPhone = new RegExp(/^[0-9]{10}$/)
+
+  if (!RegEmail.test(email) || Cpasswrd != passwrd || !RegPhone.test(Nphone) || fName == "" || lName == "" || email == "" || !RegPassword.test(passwrd)) {
     res.sendFile('formulaire.html', {
       root: source,
       mime: 'text/css'
@@ -165,7 +172,17 @@ app.post("/formulaire", function (req, res) {
       lastname: lName
     })
 
+    const newGroupe_tache = new groupe_tache({
+      id: email,
+      groupe_tache: []
+    })
+
     id.insertMany(newId, function (err) {
+      if (err)
+        console.log(err)
+    })
+
+    groupe_tache.insertMany(newGroupe_tache, function (err) {
       if (err)
         console.log(err)
     })
@@ -261,7 +278,7 @@ app.post("/del_group", function (req, res) {
 })
 
 
-app.post("/listing_tache", function(req, res){
+app.post("/listing_tache", function (req, res) {
   idTache = req.body.IDtache
   nom_Groupe_actuel = req.body.nameTache
   taches.findOne({
@@ -270,91 +287,94 @@ app.post("/listing_tache", function(req, res){
     if (err)
       console.log(err)
     else
-      if (docs == null) {
-        res.redirect("/listing_groupe")
-      }else{
-        gtaches = docs
-        res.redirect('/listing_tache')
-      }
-      
+    if (docs == null) {
+      res.redirect("/listing_groupe")
+    } else {
+      gtaches = docs
+      res.redirect('/listing_tache')
+    }
+
   })
 
 })
 
-  //fais la meme chose mais pour add_tache
+//fais la meme chose mais pour add_tache
 app.post("/add_tache", function (req, res) {
-    let name_tache = req.body.add_input
-  
-    taches.findOne({
-      id: idTache
-    }, function (err, docs) {
-      if (err)
-        console.log(err)
-      else
-        if (docs == null) {
-          res.redirect("/listing_tache")
+  let name_tache = req.body.add_input
+
+  taches.findOne({
+    id: idTache
+  }, function (err, docs) {
+    if (err)
+      console.log(err)
+    else
+    if (docs == null) {
+      res.redirect("/listing_tache")
+    } else {
+      docs.taches.push({
+        id_tache: idTache + randomstring.generate(5),
+        name_tache: name_tache
+      })
+
+      taches.updateOne({
+        id: idTache
+      }, {
+        $set: {
+          taches: docs.taches
         }
-        else {
-          docs.taches.push({
-            id_tache: idTache+randomstring.generate(5),
-            name_tache: name_tache
-          })
-  
-          taches.updateOne({
-            id: idTache
-          }, {
-            $set: {
-              taches: docs.taches
-            }
-          }, function (err, result) {
-            if (err)
-              console.log(err)
-            else
-              res.redirect('/listing_tache')
-          })
-        }
-    })
-  
+      }, function (err, result) {
+        if (err)
+          console.log(err)
+        else
+          res.redirect('/listing_tache')
+      })
+    }
   })
 
-  // faire la même chose mais pour del_tache
-  app.post("/del_tache", function (req, res) {
-      let id_tache_del = req.body.del;
-      console.log(id_tache_del);
+})
 
-      gtaches.taches.splice(id_tache_del, 1)
-      //mettre à jour la collection gtaches dans mongodb
-      taches.updateOne({
-        id: idTache
-      }, {
-        $set: {
-          taches: gtaches.taches
-        }
-      }, function (err, result) {
-        if (err)
-          console.log(err)
-        else
-          res.redirect('/listing_tache')
-      }
-      )
-    })
+// faire la même chose mais pour del_tache
+app.post("/del_tache", function (req, res) {
+  let id_tache_del = req.body.del;
+  console.log(id_tache_del);
 
-    app.post("/mod_tache", function (req, res) {
-      let indice_arr = req.body.mod
-      gtaches.taches[indice_arr].name_tache = req.body.mod_input
-      
-      //mettre à jour la collection gtaches dans mongodb
-      taches.updateOne({
-        id: idTache
-      }, {
-        $set: {
-          taches: gtaches.taches
-        }
-      }, function (err, result) {
-        if (err)
-          console.log(err)
-        else
-          res.redirect('/listing_tache')
-      }
-      )
-    })
+  gtaches.taches.splice(id_tache_del, 1)
+  //mettre à jour la collection gtaches dans mongodb
+  taches.updateOne({
+    id: idTache
+  }, {
+    $set: {
+      taches: gtaches.taches
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_tache')
+  })
+})
+
+app.post("/mod_tache", function (req, res) {
+  let indice_arr = req.body.mod
+  gtaches.taches[indice_arr].name_tache = req.body.mod_input
+
+  //mettre à jour la collection gtaches dans mongodb
+  taches.updateOne({
+    id: idTache
+  }, {
+    $set: {
+      taches: gtaches.taches
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_tache')
+  })
+})
+
+
+app.post('/return_groupe', function (req, res) {
+  res.redirect('/listing_groupe')
+  
+})
