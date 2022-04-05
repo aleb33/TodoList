@@ -33,36 +33,21 @@ div.contenu {
     position: relative;
 }
 
-#flexCheckChecked:first-child {
-    position: absolute;
-    margin-top:-50px;
-    left: 10px;
+
+#del_btn:hover {
+    background-color: rgb(241, 116, 116);
+    opacity: 1;
 }
 
+#mod_btn{
+    margin-bottom: .5rem;
+}
 #flexCheckChecked {
     position: absolute;
     left: 10px;
 }
 
-
-#supprimer {
-    position: absolute;
-    right: 5px;
-    margin-top: -55px;
-}
-
-#modifier {
-    position: absolute;
-    right: 150px;
-    margin-top: -55px;
-}
-
-#supprimer:hover {
-    background-color: rgb(241, 116, 116);
-    opacity: 1;
-}
-
-#modifier:hover {
+#mod_btn:hover {
     background-color: rgb(248, 201, 131);
     opacity: 1;
 }
@@ -73,8 +58,14 @@ div.contenu {
     left: 10px;
 }
 
-#button-add {
-    margin-top: .5rem;
+.card {
+    text-align: center;
+    margin: auto ;
+}
+
+.card:hover{
+    background-color: #d7e8fe;
+    opacity: 90%;
 }
 
 #bar,
@@ -87,4 +78,5 @@ div.contenu {
 #add_div {
     text-align: center;
     margin: auto;
+    margin-bottom: .5rem;
 }
