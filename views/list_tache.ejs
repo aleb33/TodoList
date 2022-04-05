@@ -64,18 +64,19 @@
     </tr>
   </thead>
     <tbody>
-      <form action="/undone_tache" method="post">
-     <% for(var i=0 ; i<gtaches_done.taches.length; i++) {  %>
-      <tr class="table-primary">
+      <% for(var i=0 ; i<gtaches_done.taches.length; i++) {  %>
+        <form action="/undone_tache" method="post">
+        <tr class="table-primary">
           <th scope="row"> 
-            <input class="form-check-input" type="checkbox" name="undone" value="<%= i%>"  onChange="this.form.submit()" id="flexCheckChecked" checked >
+            <input type="hidden" name="undone" value="<%= i%>">
+            <input class="form-check-input" type="checkbox" onChange="this.form.submit()" id="flexCheckChecked" checked >
             <label class="form-check-label"  for="flexCheckChecked">
               Done
             </label>  
             <%= gtaches_done.taches[i].name_tache %>
           </tr>
-          <% } %>
         </form>
+          <% } %>
         </tbody>
 </table>
   
