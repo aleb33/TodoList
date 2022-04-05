@@ -12,7 +12,9 @@ suivre attentivement la notice :
 
 ```shell
 git clone https://github.com/aleb33/TodoList
+sudo apt-get install npm
 ```
+
 ```shell
 npm install 
 ```
