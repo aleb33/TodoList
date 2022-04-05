@@ -10,9 +10,14 @@ Application de gestion des tâches en NodeJs avec interface Web.
 ### Lancement
 suivre attentivement la notice :
 
+```shell
 git clone https://github.com/aleb33/TodoList
+sudo apt-get install npm
+```
 
+```shell
 npm install 
-
+```
+```shell
 npm start
-
+```
