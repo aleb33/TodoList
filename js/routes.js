@@ -288,6 +288,7 @@ app.post("/del_group", function (req, res) {
 
 
 app.post("/listing_tache", function (req, res) {
+
   idTache = req.body.IDtache
   nom_Groupe_actuel = req.body.nameTache
   taches.findOne({
@@ -416,7 +417,7 @@ app.post('/undone_tache', function (req, res) {
 
   gtaches.taches.find(element => element.name_tache == gtaches_done.taches[ind_undone].name_tache).done = false;
 
-  
+
   gtaches_done.taches.splice(ind_undone, 1)
 
   taches.updateOne({

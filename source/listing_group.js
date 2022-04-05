@@ -27,7 +27,7 @@ function mod_button() {
 
     for (let i = 0; i < button_mod.length; i++) {
         button_mod[i].addEventListener('click', function () {
-            
+
             let newDiv = document.createElement('div')
             newDiv.setAttribute("class", "form-group")
             newDiv.innerHTML = `<label class="col-form-label mt-4" for="inputDefault">Modifier le groupe</label><input type="text" name="mod_input" class="form-control" placeholder="Nouveau nom de groupe" id="inputDefault">`
@@ -38,19 +38,30 @@ function mod_button() {
             newButton.setAttribute("name", "mod")
             newButton.setAttribute("value", i)
             newButton.innerHTML = `Modifier`
-            
+
             button_mod[i].insertAdjacentElement("afterend", newDiv)
             newDiv.insertAdjacentElement("afterend", newButton)
-            
-        }, {
-            once: true
+
         })
     }
 
+}
+
+function interactive_Div() {
+
+    let div_card_content = document.querySelectorAll('div.card-content')
+
+    for (let i = 0; i < div_card_content.length; i++) {
+        div_card_content[i].addEventListener('click', function () {
+            let form = document.querySelector('form[action="/listing_tache"]')
+            form.submit();
+        })
+    }
 }
 
 
 
 function pageLoad() {
     mod_button()
+    interactive_Div()
 }
