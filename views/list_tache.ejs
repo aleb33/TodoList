@@ -33,21 +33,21 @@
     <% if (!gtaches.taches[i].done) { %>
 
     <tr class="table-primary">
-        <th scope="row">
-          <form action="/done_tache" method="post">
-            <input class="form-check-input check" type="checkbox" name="done" value="<%= gtaches.taches[i].id_tache%>"
-              onChange="parentNode.submit()" id="flexCheckChecked">
+      <th scope="row">
+        <form action="/done_tache" method="post">
+          <input class="form-check-input check-undone" type="checkbox" name="done"
+            value="<%= gtaches.taches[i].id_tache%>" onChange="parentNode.submit()" id="flexCheckChecked">
           <%= gtaches.taches[i].name_tache %>
-      </form>
-      <form action="/mod_tache" method="post">
-        <input type="hidden" name="mod" value="<%= gtaches.taches[i].id_tache%>">
-        <button type="button" id="modifier" class="btn btn btn-primary btn-mod ">Modifier</button>
-      </form>
-      <form action="/del_tache" method="post">
-        <button type="submit" id="supprimer" name="del" value="<%= i%>"
-          class="btn btn-del btn-primary">Supprimer</button>
-      </form>
-    </th>
+        </form>
+        <form action="/mod_tache" method="post">
+          <input type="hidden" name="mod" value="<%= gtaches.taches[i].id_tache%>">
+          <button type="button" id="modifier" class="btn btn btn-primary btn-mod ">Modifier</button>
+        </form>
+        <form action="/del_tache" method="post">
+          <button type="submit" id="supprimer" name="del" value="<%= i%>"
+            class="btn btn-del btn-primary">Supprimer</button>
+        </form>
+      </th>
     </tr>
     <% } %>
     <% } %>
@@ -68,17 +68,18 @@
   <tbody>
     <% for(var i=0 ; i<gtaches.taches.length; i++) {  %>
     <% if (gtaches.taches[i].done) { %>
-      <tr class="table-primary">
-        <th scope="row">
-          <form action="/undone_tache" method="post">
+    <tr class="table-primary">
+      <th scope="row">
+        <form action="/undone_tache" method="post">
           <input type="hidden" name="undone" value="<%= gtaches.taches[i].id_tache %>">
-          <input class="form-check-input check" type="checkbox" onChange="parentNode.submit()" id="flexCheckChecked" checked>
+          <input class="form-check-input check-done" type="checkbox" onChange="parentNode.submit()"
+            id="flexCheckChecked" checked>
           <label class="form-check-label" for="flexCheckChecked">
             Done
           </label>
           <%= gtaches.taches[i].name_tache %>
-        </th>
-      </tr>
+      </th>
+    </tr>
     </form>
     <% } %>
     <% } %>

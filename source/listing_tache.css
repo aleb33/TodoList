@@ -33,14 +33,6 @@ div.contenu {
     position: relative;
 }
 
-
-
-.check{
-    position: relative;
-    left: 0;
-}
-
-
 #supprimer {
     position: absolute;
     right: 5px;
@@ -65,7 +57,7 @@ div.contenu {
 
 .form-check-label {
     position: absolute;
-    left: 10px;
+    left: 0px;
 }
 
 #button-add {
