@@ -30,15 +30,16 @@
     </thead>
       <tbody>
        <% for(var i=0 ; i<gtaches.taches.length; i++) {  %>
+         <% if (!gtaches.taches[i].done) { %>
+           
         <tr class="table-primary">
           <form action="listing_tache" method="post">
-
-            <th scope="row"> <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-              <label class="form-check-label" for="flexCheckChecked">
-                Done
-              </label> 
+            <th scope="row"> 
               <%= gtaches.taches[i].name_tache %>
-              
+          </form>
+          <form action="/done_tache" method="post">
+            <input class="form-check-input" type="checkbox" name="done" value="<%= i%>"  onChange="parentNode.submit()" id="flexCheckChecked" >
+            
           </form>
           <form action="/mod_tache" method="post">
               <button type="button" id="modifier"  class="btn btn btn-primary btn-mod ">Modifier</button>
@@ -48,6 +49,7 @@
           </form>
         </tr>
         <% } %>
+        <% } %>
       </tbody>
   </table>
   <div id="add_div">
@@ -55,4 +57,25 @@
     <button type="button" name="add" id="button-add" onclick="add_tache()" class="btn btn-outline-primary">Ajouter une tâche</button>
 </form>
 </div>
+<table id="tache" class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Tâches Faites</th>
+    </tr>
+  </thead>
+    <tbody>
+      <form action="/undone_tache" method="post">
+     <% for(var i=0 ; i<gtaches_done.taches.length; i++) {  %>
+      <tr class="table-primary">
+          <th scope="row"> 
+            <input class="form-check-input" type="checkbox" name="undone" value="<%= i%>"  onChange="this.form.submit()" id="flexCheckChecked" checked >
+            <label class="form-check-label"  for="flexCheckChecked">
+              Done
+            </label>  
+            <%= gtaches_done.taches[i].name_tache %>
+          </tr>
+          <% } %>
+        </form>
+        </tbody>
+</table>
   

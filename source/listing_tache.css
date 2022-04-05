@@ -55,7 +55,7 @@ div.contenu {
     opacity: 1;
 }
 
-#flexCheckChecked,
+#flexCheckDefault,
 .form-check-label {
     position: absolute;
     left: 10px;

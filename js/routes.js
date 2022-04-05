@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const router = express.Router();
-let idConnected, idTache, groupTache, gtaches, nom_Groupe_actuel;
+let idConnected, idTache, groupTache, gtaches, gtaches_done, nom_Groupe_actuel;
 app.use(express.static('./source/'));
 app.use(express.static('./js/'));
 app.use(bodyParser.urlencoded({
@@ -36,7 +36,8 @@ const tacheSchema = {
   id: String,
   taches: [{
     id_tache: String,
-    name_tache: String
+    name_tache: String,
+    done: Boolean
   }]
 }
 
@@ -88,10 +89,19 @@ app.get('/listing_tache', (req, res) => {
       console.log(err)
     else
       gtaches = docs
+    gtaches_done = {
+      id: idTache,
+      taches: []
+    }
+
+    gtaches_done.taches = gtaches.taches.filter(obj => (obj.done) == true);
+
+
     res.render("list_tache", {
       idConnected,
       gtaches,
-      nom_Groupe_actuel
+      nom_Groupe_actuel,
+      gtaches_done
     })
   })
   //__dirname : It will resolve to your project folder.
@@ -311,7 +321,8 @@ app.post("/add_tache", function (req, res) {
     } else {
       docs.taches.push({
         id_tache: idTache + randomstring.generate(5),
-        name_tache: name_tache
+        name_tache: name_tache,
+        done: false
       })
 
       taches.updateOne({
@@ -334,7 +345,6 @@ app.post("/add_tache", function (req, res) {
 // faire la même chose mais pour del_tache
 app.post("/del_tache", function (req, res) {
   let id_tache_del = req.body.del;
-  console.log(id_tache_del);
 
   gtaches.taches.splice(id_tache_del, 1)
   //mettre à jour la collection gtaches dans mongodb
@@ -355,7 +365,7 @@ app.post("/del_tache", function (req, res) {
 app.post("/mod_tache", function (req, res) {
   let indice_arr = req.body.mod
   gtaches.taches[indice_arr].name_tache = req.body.mod_input
-  if(gtaches.taches[indice_arr].name_tache == ""){
+  if (gtaches.taches[indice_arr].name_tache == "") {
     gtaches.taches.splice(indice_arr, 1)
   }
   //mettre à jour la collection gtaches dans mongodb
@@ -376,5 +386,51 @@ app.post("/mod_tache", function (req, res) {
 
 app.post('/return_groupe', function (req, res) {
   res.redirect('/listing_groupe')
-  
+
+})
+
+
+app.post('/done_tache', function (req, res) {
+  let ind_done = req.body.done;
+  gtaches.taches[ind_done].done = true;
+
+  gtaches_done.taches.push(ind_done);
+
+  taches.updateOne({
+    id: idTache
+  }, {
+    $set: {
+      taches: gtaches.taches
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_tache')
+  })
+})
+
+app.post('/undone_tache', function (req, res) {
+  let ind_undone = req.body.undone;
+  console.log(gtaches.taches)
+  console.log(gtaches_done.taches)
+  console.log("ind_undone ", ind_undone);
+  console.log("taches " + gtaches_done.taches[ind_undone])
+
+  console.log(gtaches.taches.find(element => element.name_tache == gtaches_done.taches[ind_undone].name_tache));
+
+  gtaches_done.taches.splice(ind_undone, 1)
+
+  taches.updateOne({
+    id: idTache
+  }, {
+    $set: {
+      taches: gtaches.taches
+    }
+  }, function (err, result) {
+    if (err)
+      console.log(err)
+    else
+      res.redirect('/listing_tache')
+  })
 })

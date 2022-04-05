@@ -23,7 +23,7 @@ function mod_button() {
 
     for (let i = 0; i < button_mod.length; i++) {
         button_mod[i].addEventListener('click', function () {
-            
+
             let newDiv = document.createElement('div')
             newDiv.setAttribute("class", "form-group")
             newDiv.innerHTML = `<label class="col-form-label mt-4" for="inputDefault">Modifier la tâche</label><input type="text" name="mod_input" class="form-control" placeholder="Nouveau nom de tâche" id="inputDefault">`
@@ -34,16 +34,17 @@ function mod_button() {
             newButton.setAttribute("name", "mod")
             newButton.setAttribute("value", i)
             newButton.innerHTML = `Modifier`
-            
+
             button_mod[i].insertAdjacentElement("afterend", newDiv)
             newDiv.insertAdjacentElement("afterend", newButton)
-            
+
         }, {
             once: true
         })
     }
 
 }
+
 function pageLoad() {
     mod_button()
 }
