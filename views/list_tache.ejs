@@ -33,14 +33,11 @@
     <% if (!gtaches.taches[i].done) { %>
 
     <tr class="table-primary">
-      <form action="listing_tache" method="post">
         <th scope="row">
+          <form action="/done_tache" method="post">
+            <input class="form-check-input check" type="checkbox" name="done" value="<%= gtaches.taches[i].id_tache%>"
+              onChange="parentNode.submit()" id="flexCheckChecked">
           <%= gtaches.taches[i].name_tache %>
-      </form>
-      <form action="/done_tache" method="post">
-        <input class="form-check-input" type="checkbox" name="done" value="<%= gtaches.taches[i].id_tache%>"
-          onChange="parentNode.submit()" id="flexCheckChecked">
-
       </form>
       <form action="/mod_tache" method="post">
         <input type="hidden" name="mod" value="<%= gtaches.taches[i].id_tache%>">
@@ -50,6 +47,7 @@
         <button type="submit" id="supprimer" name="del" value="<%= i%>"
           class="btn btn-del btn-primary">Supprimer</button>
       </form>
+    </th>
     </tr>
     <% } %>
     <% } %>
@@ -74,7 +72,7 @@
         <th scope="row">
           <form action="/undone_tache" method="post">
           <input type="hidden" name="undone" value="<%= gtaches.taches[i].id_tache %>">
-          <input class="form-check-input" type="checkbox" onChange="parentNode.submit()" id="flexCheckChecked" checked>
+          <input class="form-check-input check" type="checkbox" onChange="parentNode.submit()" id="flexCheckChecked" checked>
           <label class="form-check-label" for="flexCheckChecked">
             Done
           </label>

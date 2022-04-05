@@ -33,15 +33,11 @@ div.contenu {
     position: relative;
 }
 
-#flexCheckChecked:first-child {
-    position: absolute;
-    margin-top:-50px;
-    left: 10px;
-}
 
-#flexCheckChecked {
-    position: absolute;
-    left: 10px;
+
+.check{
+    position: relative;
+    left: 0;
 }
 
 
@@ -67,7 +63,6 @@ div.contenu {
     opacity: 1;
 }
 
-#flexCheckDefault,
 .form-check-label {
     position: absolute;
     left: 10px;
