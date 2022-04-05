@@ -280,8 +280,8 @@ app.post("/del_group", function (req, res) {
 
 app.post("/listing_tache", function (req, res) {
 
-  idTache = req.body.IDtache
-  nom_Groupe_actuel = req.body.nameTache
+  idTache = req.body.IDtacheGrp
+  nom_Groupe_actuel = req.body.nameTacheGrp
   taches.findOne({
     id: idTache
   }, function (err, docs) {
@@ -299,40 +299,43 @@ app.post("/listing_tache", function (req, res) {
 
 })
 
-//fais la meme chose mais pour add_tache
+
 app.post("/add_tache", function (req, res) {
-  let name_tache = req.body.add_input
+  if (req.body.add_input == "") {
+    res.redirect("/listing_tache")
+  } else {
+    let name_tache = req.body.add_input
 
-  taches.findOne({
-    id: idTache
-  }, function (err, docs) {
-    if (err)
-      console.log(err)
-    else
-    if (docs == null) {
-      res.redirect("/listing_tache")
-    } else {
-      docs.taches.push({
-        id_tache: idTache + randomstring.generate(5),
-        name_tache: name_tache,
-        done: false
-      })
+    taches.findOne({
+      id: idTache
+    }, function (err, docs) {
+      if (err)
+        console.log(err)
+      else
+      if (docs == null) {
+        res.redirect("/listing_tache")
+      } else {
+        docs.taches.push({
+          id_tache: idTache + randomstring.generate(5),
+          name_tache: name_tache,
+          done: false
+        })
 
-      taches.updateOne({
-        id: idTache
-      }, {
-        $set: {
-          taches: docs.taches
-        }
-      }, function (err, result) {
-        if (err)
-          console.log(err)
-        else
-          res.redirect('/listing_tache')
-      })
-    }
-  })
-
+        taches.updateOne({
+          id: idTache
+        }, {
+          $set: {
+            taches: docs.taches
+          }
+        }, function (err, result) {
+          if (err)
+            console.log(err)
+          else
+            res.redirect('/listing_tache')
+        })
+      }
+    })
+  }
 })
 
 // faire la même chose mais pour del_tache
@@ -356,13 +359,13 @@ app.post("/del_tache", function (req, res) {
 })
 
 app.post("/mod_tache", function (req, res) {
-  
-  if (req.body.mod_input != ""){
+
+  if (req.body.mod_input != "") {
     gtaches.taches.find(elt => elt.id_tache == req.body.mod).name_tache = req.body.mod_input
   } else {
     gtaches.taches.splice(gtaches.taches.indexOf(gtaches.taches.find(elt => elt.id_tache == req.body.mod)), 1)
   }
-  
+
   //mettre à jour la collection gtaches dans mongodb
   taches.updateOne({
     id: idTache

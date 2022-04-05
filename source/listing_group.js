@@ -53,8 +53,9 @@ function interactive_Div() {
 
     for (let i = 0; i < div_card_content.length; i++) {
         div_card_content[i].addEventListener('click', function () {
-            let form = document.querySelector('form[action="/listing_tache"]')
-            form.submit();
+            console.log(div_card_content[i].parentNode)
+            div_card_content[i].parentNode.submit();
+
         })
     }
 }

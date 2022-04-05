@@ -31,8 +31,6 @@ function mod_button() {
             let newButton = document.createElement("button")
             newButton.setAttribute("class", "btn btn-primary")
             newButton.setAttribute("type", "submit")
-            newButton.setAttribute("name", "mod")
-            newButton.setAttribute("value", i)
             newButton.innerHTML = `Modifier`
 
             button_mod[i].insertAdjacentElement("afterend", newDiv)
@@ -43,10 +41,6 @@ function mod_button() {
         })
     }
 
-}
-
-function undone_tache_submit(){
-    document.querySelector('form[action="/undone_tache"]').submit()
 }
 
 function pageLoad() {

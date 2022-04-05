@@ -70,10 +70,11 @@
   <tbody>
     <% for(var i=0 ; i<gtaches.taches.length; i++) {  %>
     <% if (gtaches.taches[i].done) { %>
-      <form action="/undone_tache" method="post">
       <tr class="table-primary">
         <th scope="row">
-          <input class="form-check-input" type="checkbox" name="undone" value="<%= gtaches.taches[i].id_tache %>" onChange="undone_tache_submit()" id="flexCheckChecked" checked>
+          <form action="/undone_tache" method="post">
+          <input type="hidden" name="undone" value="<%= gtaches.taches[i].id_tache %>">
+          <input class="form-check-input" type="checkbox" onChange="parentNode.submit()" id="flexCheckChecked" checked>
           <label class="form-check-label" for="flexCheckChecked">
             Done
           </label>
