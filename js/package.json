@@ -29,6 +29,7 @@
     "jquery": "^3.6.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15",
     "prompt": "^1.2.2",
     "prompt-async": "^0.9.9",
     "prompt-sync": "^4.1.6",

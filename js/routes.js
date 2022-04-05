@@ -278,6 +278,7 @@ app.post("/del_group", function (req, res) {
 
 app.post("/listing_tache", function (req, res) {
   idTache = req.body.IDtache
+  console.log(idTache)
   nom_Groupe_actuel = req.body.nameTache
   taches.findOne({
     id: idTache
