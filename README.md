@@ -8,6 +8,8 @@
 Application de gestion des tâches en NodeJs avec interface Web.
 
 ### Lancement
-npm install ...
+suivre attentivement la notice :
+git clone https://github.com/aleb33/TodoList
+npm install 
 npm start
 
