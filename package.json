@@ -1,0 +1,39 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "TODOLIST",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon js/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aleb33/TodoList.git"
+  },
+  "keywords": [
+    "TODOLIST",
+    "methodedev"
+  ],
+  "author": "Alois B. & Alexandre B.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aleb33/TodoListm/issues"
+  },
+  "homepage": "https://github.com/aleb33/TodoList#readme",
+  "dependencies": {
+    "ajax": "^0.0.4",
+    "body-parser": "^1.19.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "jquery": "^3.6.0",
+    "mongodb": "^4.4.1",
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15",
+    "prompt": "^1.2.2",
+    "prompt-async": "^0.9.9",
+    "prompt-sync": "^4.1.6",
+    "randomstring": "^1.2.2",
+    "save": "^2.4.0"
+  }
+}
