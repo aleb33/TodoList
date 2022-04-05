@@ -98,21 +98,6 @@ app.get('/listing_tache', (req, res) => {
   //__dirname : It will resolve to your project folder.
 });
 
-app.post('/modifier_groupe', (req, res) => {
-  res.sendFile('modifier_groupe.html', {
-    root: source,
-    mime: 'text/css'
-  });
-  //__dirname : It will resolve to your project folder.
-});
-app.post('/modifier_tache', (req, res) => {
-  res.sendFile('modifier_tache.html', {
-    root: source,
-    mime: 'text/css'
-  });
-  //__dirname : It will resolve to your project folder.
-});
-
 //add the router
 app.use('/', router);
 app.listen(process.env.port || 3000);
@@ -407,7 +392,6 @@ app.post('/done_tache', function (req, res) {
 
 app.post('/undone_tache', function (req, res) {
   let id_undone = req.body.undone;
-  console.log(id_undone)
   gtaches.taches.find(elt => elt.id_tache == id_undone).done = false;
 
   taches.updateOne({
