@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 const router = express.Router();
-let idConnected, idTache, groupTache, gtaches, gtaches_done, nom_Groupe_actuel;
+let idConnected, idTache, groupTache, gtaches, nom_Groupe_actuel;
 app.use(express.static('./source/'));
 app.use(express.static('./js/'));
 app.use(bodyParser.urlencoded({
@@ -89,19 +89,10 @@ app.get('/listing_tache', (req, res) => {
       console.log(err)
     else
       gtaches = docs
-    gtaches_done = {
-      id: idTache,
-      taches: []
-    }
-
-    gtaches_done.taches = gtaches.taches.filter(obj => (obj.done) == true);
-
-
     res.render("list_tache", {
       idConnected,
       gtaches,
-      nom_Groupe_actuel,
-      gtaches_done
+      nom_Groupe_actuel
     })
   })
   //__dirname : It will resolve to your project folder.
@@ -365,11 +356,13 @@ app.post("/del_tache", function (req, res) {
 })
 
 app.post("/mod_tache", function (req, res) {
-  let indice_arr = req.body.mod
-  gtaches.taches[indice_arr].name_tache = req.body.mod_input
-  if (gtaches.taches[indice_arr].name_tache == "") {
-    gtaches.taches.splice(indice_arr, 1)
+  
+  if (req.body.mod_input != ""){
+    gtaches.taches.find(elt => elt.id_tache == req.body.mod).name_tache = req.body.mod_input
+  } else {
+    gtaches.taches.splice(gtaches.taches.indexOf(gtaches.taches.find(elt => elt.id_tache == req.body.mod)), 1)
   }
+  
   //mettre à jour la collection gtaches dans mongodb
   taches.updateOne({
     id: idTache
@@ -393,11 +386,8 @@ app.post('/return_groupe', function (req, res) {
 
 
 app.post('/done_tache', function (req, res) {
-  let ind_done = req.body.done;
-  gtaches.taches[ind_done].done = true;
-
-  gtaches_done.taches.push(ind_done);
-
+  let id_done = req.body.done;
+  gtaches.taches.find(elt => elt.id_tache == id_done).done = true;
   taches.updateOne({
     id: idTache
   }, {
@@ -413,12 +403,9 @@ app.post('/done_tache', function (req, res) {
 })
 
 app.post('/undone_tache', function (req, res) {
-  let ind_undone = req.body.undone;
-
-  gtaches.taches.find(element => element.name_tache == gtaches_done.taches[ind_undone].name_tache).done = false;
-
-
-  gtaches_done.taches.splice(ind_undone, 1)
+  let id_undone = req.body.undone;
+  console.log(id_undone)
+  gtaches.taches.find(elt => elt.id_tache == id_undone).done = false;
 
   taches.updateOne({
     id: idTache

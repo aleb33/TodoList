@@ -45,6 +45,10 @@ function mod_button() {
 
 }
 
+function undone_tache_submit(){
+    document.querySelector('form[action="/undone_tache"]').submit()
+}
+
 function pageLoad() {
     mod_button()
 }
