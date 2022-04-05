@@ -49,19 +49,8 @@ function mod_button() {
 
 }
 
-function interactiveDiv() {
-
-    let card = document.querySelectorAll('.card-content')
-    for (let i = 0; i < card.length; i++) {
-        card[i].addEventListener('click', function () {
-            document.querySelector('form[action="/listing_tache"]').submit()
-        })
-    }
-}
-
 
 
 function pageLoad() {
     mod_button()
-    interactiveDiv()
 }

@@ -31,10 +31,10 @@
 </form>
 <% for (var i=0; i<groupTache.groupe_tache.length; i++) { %>
 <form action="/listing_tache" method="post">
-    <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+    <input type="hidden" name="IDtache" value="<%= groupTache.groupe_tache[i].id_grp_tache %>">
+    <input type="hidden" name="nameTache" value="<%= groupTache.groupe_tache[i].name_groupe %>">
+    <div onclick="parentNode.submit();" class="card text-white bg-info mb-3" style="max-width: 20rem;">
         <div class="card-content">
-            <input type="hidden" name="IDtache" value="<%= groupTache.groupe_tache[i].id_grp_tache %>">
-            <input type="hidden" name="nameTache" value="<%= groupTache.groupe_tache[i].name_groupe %>">
             <div class="card-header">Groupe <%= i+1 %></div>
             <div class="card-body">
                 <h4 class="card-title"><%= groupTache.groupe_tache[i].name_groupe %></h4>
