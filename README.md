@@ -7,7 +7,7 @@
 ## Gestionnaire des Tâches 
 Application de gestion des tâches en NodeJs avec interface Web.
 
-### Énoncé :
+### Énoncé
 
 L'application consiste en un gestionnaire de taches personnel qui permet de : 
 - Créer un compte utilisateur avec un email et un mot de passe
